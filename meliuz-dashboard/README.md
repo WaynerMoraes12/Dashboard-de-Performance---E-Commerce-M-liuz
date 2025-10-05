@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Case Técnico - Estágio em Estratégia - Méliuz
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Sobre a Empresa
+O Méliuz é a maior plataforma de cashback do Brasil. Com mais de 40 milhões de usuários cadastrados e milhares de parceiros, movimenta anualmente mais de 4 bilhões de reais em vendas no e-commerce.
 
-## Available Scripts
+## Modelo de Negócio
+O principal modelo de negócio baseia-se na geração de vendas para lojas parceiras. Para cada venda gerada, o Méliuz recebe uma comissão, que é dividida entre a empresa e o comprador, gerando cashback.
 
-In the project directory, you can run:
+O ecossistema da empresa conta com múltiplos canais de venda e produtos, potencializando tanto as vendas quanto o cashback oferecido.
 
-### `npm start`
+## Desafio
+O time de estratégia busca otimizar os resultados da linha de negócios de E-Commerce, realizando:
+- Definição de KPIs relevantes;
+- Construção de dashboards de acompanhamento;
+- Identificação de problemas e oportunidades de melhoria;
+- Análise de causas-raiz e proposição de planos de ação.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+O objetivo deste projeto é analisar a queda de performance na linha de E-Commerce usando a base de dados fornecida.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Integração com Google Sheets
+Este projeto faz **integração com Google Sheets** para leitura e análise de dados.  
 
-### `npm test`
+### Funcionalidades:
+- Conexão com planilhas do Google Sheets usando API.
+- Extração de dados diretamente da planilha.
+- Processamento e análise dos dados em Python/Node.js (ou outra linguagem usada).
+- Visualização de KPIs e insights baseados nos dados da planilha.
+- Exportação de resultados para Google Sheets ou relatórios locais.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Configuração da API
+1. Crie um projeto no [Google Cloud Console](https://console.cloud.google.com/).
+2. Habilite a **Google Sheets API**.
+3. Crie uma **chave de serviço (service account)** e baixe o arquivo JSON.
+4. Compartilhe a planilha do Google Sheets com o email da service account.
+5. Salve o arquivo JSON no diretório do projeto e configure seu código para usar essa chave.
 
-### `npm run build`
+### Exemplo de Uso
+```python
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Definindo escopo
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Autenticação
+creds = ServiceAccountCredentials.from_json_keyfile_name("service_account.json", scope)
+client = gspread.authorize(creds)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Abrindo a planilha
+sheet = client.open("NomeDaPlanilha").sheet1
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Lendo dados
+data = sheet.get_all_records()
+print(data)
